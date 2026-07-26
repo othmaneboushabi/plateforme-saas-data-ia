@@ -3,8 +3,8 @@
 ## État actuel
 
 - **Phase en cours** : Phase 1 — Data Engineering
-- **Dernière étape validée** : Étape 3 (test automatisé de l'isolation multi-tenant, pytest)
-- **Prochaine étape** : Étape 4 — initialiser Git + brancher GitHub Actions (CI) pour exécuter automatiquement le test d'isolation à chaque changement
+- **Dernière étape validée** : Étape 4 (Git + GitHub Actions CI, workflow vert ✅)
+- **Prochaine étape** : Étape 5 — ingestion de données CSV par tenant (début de la partie "vraie" Phase 1 : upload + lecture de fichiers)
 
 ## Décisions et pièges à retenir
 
@@ -36,6 +36,14 @@
 - `requirements.txt` : `psycopg[binary]`, `pytest`
 - Créé `tests/test_tenant_isolation.py` : 3 tests vérifiant l'isolation entre tenant 1 et tenant 2
 - Tous les tests passent (`pytest tests/test_tenant_isolation.py -v` → 3 passed)
+
+### Étape 4 — Git + GitHub Actions (CI)
+- Initialisé le dépôt Git local (`git init`), créé `.gitignore`
+- Rendu le DSN de connexion configurable via la variable d'environnement `DATABASE_DSN` (pour que le test fonctionne aussi bien en local qu'en CI, où le port Postgres diffère)
+- Créé `.github/workflows/ci.yml` : à chaque push, démarre un PostgreSQL frais, applique `init.sql`, lance `pytest`
+- Dépôt distant : https://github.com/othmaneboushabi/plateforme-saas-data-ia
+- Installé et authentifié GitHub CLI (`gh`) pour piloter/vérifier GitHub depuis le terminal
+- Premier run CI vérifié : **succès** (3 tests passés sur les serveurs GitHub)
 
 ## Comment relancer l'environnement (pour reprendre après une pause)
 
