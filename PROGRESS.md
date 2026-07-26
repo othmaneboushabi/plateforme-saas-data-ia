@@ -3,8 +3,8 @@
 ## État actuel
 
 - **Phase en cours** : Phase 1 — Data Engineering
-- **Dernière étape validée** : Étape 4 (Git + GitHub Actions CI, workflow vert ✅)
-- **Prochaine étape** : Étape 5 — ingestion de données CSV par tenant (début de la partie "vraie" Phase 1 : upload + lecture de fichiers)
+- **Dernière étape validée** : Étape 5 (ingestion CSV par tenant, avec test automatisé)
+- **Prochaine étape** : Étape 6 — orchestration avec Apache Airflow (transformer l'ingestion manuelle en pipeline automatique planifié)
 
 ## Décisions et pièges à retenir
 
@@ -44,6 +44,14 @@
 - Dépôt distant : https://github.com/othmaneboushabi/plateforme-saas-data-ia
 - Installé et authentifié GitHub CLI (`gh`) pour piloter/vérifier GitHub depuis le terminal
 - Premier run CI vérifié : **succès** (3 tests passés sur les serveurs GitHub)
+
+### Étape 5 — Ingestion CSV par tenant
+- Ajouté `pandas` aux dépendances (`requirements.txt`)
+- Créé 2 CSV d'exemple : `data/sample_tenants/tenant_1_sales.csv` et `tenant_2_sales.csv`
+- Créé `services/ingestion/ingest_csv.py` : lit un CSV avec Pandas, insère chaque ligne dans `sales` avec le bon `tenant_id`
+- Testé manuellement : ingestion des 2 CSV réussie, isolation toujours vérifiée après (les données réelles ne fuient pas)
+- Ajouté `tests/test_ingestion.py` : vérifie que l'ingestion tague bien les lignes avec le bon tenant (nettoie ses propres données de test à la fin pour rester rejouable)
+- 4 tests passent au total (1 ingestion + 3 isolation)
 
 ## Comment relancer l'environnement (pour reprendre après une pause)
 
