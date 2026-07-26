@@ -44,4 +44,4 @@ jobs:
       - name: Lancer les tests
         env:
           DATABASE_DSN: "host=localhost port=5432 dbname=saas_platform user=app_user password=app_password"
-        run: pytest tests/ -v
+        run: python -m pytest tests/ -v
