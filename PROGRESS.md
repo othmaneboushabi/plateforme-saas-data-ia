@@ -14,6 +14,7 @@
 - Isolation RLS activée sur la table `sales` via `tenant_id` + `SET app.current_tenant` (voir `infra/postgres/init.sql`)
 - Dépendance PostgreSQL Python : **`psycopg` (v3)**, pas `psycopg2-binary` — celui-ci ne build pas sur Python 3.13 sur cette machine.
 - `SET app.current_tenant = %s` ne fonctionne pas paramétré en SQL classique → utiliser `SELECT set_config('app.current_tenant', %s, false)`.
+- Dans le workflow CI, toujours lancer les tests avec `python -m pytest` et non `pytest` tout court : sans le `python -m`, le dossier du projet n'est pas ajouté automatiquement au chemin de recherche des modules, et les imports du type `from services.ingestion...` échouent avec `ModuleNotFoundError`.
 
 ## Historique des étapes
 
